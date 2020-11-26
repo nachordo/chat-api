@@ -15,3 +15,8 @@ def get_table(name):
     query = f"SELECT * FROM {name};"
     res = conn.execute(query)
     return res
+
+def get_table(name):
+    query = f"SELECT * FROM {name};"
+    res = conn.execute(query)
+    return res
