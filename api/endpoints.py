@@ -28,8 +28,11 @@ def sql(name):
 
 @app.route("/chat/create/<name>")
 def chat_create(name):
+    members = request.args.get("members")
+    lst = list(map(int, members))
     #needs to add people to the chat
-    return insert_chat(name)
+    # results = list(map(int, results))
+    return insert_chat(name,lst)
 
 @app.route("/user/create/<name>")
 def user_create(name):
