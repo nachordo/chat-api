@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine,insert
 from dotenv import load_dotenv
 import pymysql
 import os
@@ -27,19 +27,54 @@ conn = engine.connect()
 
 
 
+def insert_chat(name):
+    query = f"SELECT * FROM chat.chats WHERE name='{name}';"
+    res = list(conn.execute(query))
+    if res == []:
+        query = f"INSERT INTO chat.chats (name) VALUES ('{name}');"
+        print(query)
+        res = conn.execute(query)
+        
+        return get_chat_info(name)
+    else:
+        return {"error": {"id":1020220201,"mensage":"Chat already exists"}}
 
-def insert_table(name):
-    """
-    INSERT INTO Customers (CustomerName, ContactName, Address, City, PostalCode, Country)
-    VALUES ('Cardinal', 'Tom B. Erichsen', 'Skagen 21', 'Stavanger', '4006', 'Norway');
-    INSERT INTO Customers (CustomerName, City, Country)
-    VALUES ('Cardinal', 'Stavanger', 'Norway');
-    """
-    query = f"INSERT INTO chat.chats (name) VALUES ('{name}');"
-    res = conn.execute(query)
-    return serialize(res)
+
+
+
+def user_info(username):
+    query = f"SELECT id_usr,username FROM chat.users WHERE username='{username}';"
+    res = list(conn.execute(query))[0]
+    columns = ["id_usr","username"]
+    dic = {columns[i]:res[i] for i in range(len(columns))}
+    return dic  
+
+
+def insert_user(username):
+    query = f"SELECT username FROM chat.users WHERE username='{username}';"
+    res = list(conn.execute(query))
+    if res == []:
+        query = f"INSERT INTO chat.users (username) VALUES ('{username}');"
+        #query = f"INSERT INTO chat.users (username,password) VALUES ('{username},{password}');"
+        res = conn.execute(query)
+        
+        return user_info(username)
+    else:
+        return {"error": {"id":80022008,"mensage":"Uer already exists"}}  
 
 def get_table(name):
     query = f"SELECT * FROM lab_advanced.{name};"
     res = conn.execute(query)
-    return serialize(res)
+    return list(res)
+
+def get_chat_info(name):
+    query = f"SELECT * FROM chat.chats WHERE name='{name}';"
+    res = list(conn.execute(query))[0]
+    columns = ["id_chat","name"]
+    dic = {columns[i]:res[i] for i in range(len(columns))}
+    return dic
+"""
+print(get_chat_info("PRU"))
+print(insert_chat("PRU2"))
+print(insert_chat("PRU2"))
+"""
