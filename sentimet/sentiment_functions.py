@@ -24,9 +24,6 @@ def obtain_sentiment(user_id=0,chat_id=0,n_msg=0,last=True):
     dic = {"list":msgs, "sentiment":sentiment_stats(msgs)}
     res={"user_id":user_id, "chat_id":chat_id, "query_limit":n_msg, "from_last":last, "sentiment":dic}
     return res
-    
-
-
 
 def unwrapped_msg(user_id=0,chat_id=0,n_msg=0,last=True):
     queried_msg = get_msg(user_id,chat_id,n_msg,last) #res["msg_query"][0]["id_msg"]
