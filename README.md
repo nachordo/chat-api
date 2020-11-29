@@ -10,12 +10,28 @@ To do so, I worked with the following tools to complete this challenge:
  
 In addition I used `MySQL` to handle the chat database, and I communicated it with the python code using `sqlalchemy` and `pymysql`.
  
-### API functions
+## API functions
  
-Words
+
+`/chat/create/<name>`
+
+`/user/create/<username>`
+
+`/chat/adduser/`
+
+`/chat/addmessage/`
+
+`/chat/list/<chat_id>`
+
+`/user/list/<user_id>`
+
+`/chat/sentiment/<chat_id>`
+
+`/user/sentiment/<user_id>`
+
+
  
- 
-### MySQL Database Creation
+## MySQL Database Creation
  
 In the following figure I show a very simplistic database schema to handle the chat app.
  
@@ -23,10 +39,10 @@ In the following figure I show a very simplistic database schema to handle the c
  
 I created a series of users and chat names to create the table and I assigned a random set of users for each chat. Lastly, I listed a series of random mensajes, so I made each user in each chat post some of them in a random order.
  
-### Text sentiment analysis
+## Text sentiment analysis
  
 Words
  
-### Final thoughts
+## Final thoughts
  
 words

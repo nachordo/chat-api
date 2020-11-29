@@ -6,19 +6,18 @@ import os
 from json import dumps
 from sqlalchemy.orm import class_mapper
 
+# Obtains the user and password from environment variables
 load_dotenv()
-
-
-
 user = os.getenv("SQLUSER")
 password = os.getenv("SQLPASS")
 
+# Initiantes the MySQL connection
 mysql_url = f'mysql+pymysql://{user}:{password}@localhost'
 engine = create_engine(mysql_url)
 conn = engine.connect()
 
 
-
+# Function to create a chat room
 def insert_chat(name,lst):
     query = f"SELECT * FROM chat.chats WHERE name='{name}';"
     res = list(conn.execute(query))
@@ -32,6 +31,7 @@ def insert_chat(name,lst):
     else:
         return {"error": {"id":1020220201,"mensage":"Chat already exists"}}
 
+# Function to insert users in chat room
 def insert_usrinchat(user_id,chat_id):
     query = f"SELECT * FROM chat.participants WHERE (chats_id_chat={chat_id} AND users_id_usr={user_id});"
     res = list(conn.execute(query))
@@ -42,7 +42,8 @@ def insert_usrinchat(user_id,chat_id):
         return {"chat_id":chat_id}
     else:
         return {"error": {"id":4224,"mensage":f"USRID={user_id} already in CHATID={chat_id}. Ignoring your commands."}}
-    
+
+# Function to obtain the chat info    
 def get_chat_info(name):
     query = f"SELECT * FROM chat.chats WHERE name='{name}';"
     res = list(conn.execute(query))[0]
@@ -50,6 +51,7 @@ def get_chat_info(name):
     dic = {columns[i]:res[i] for i in range(len(columns))}
     return dic
 
+# Function to obtain user info
 def user_info(username):
     query = f"SELECT id_usr,name,username FROM chat.users WHERE username='{username}';"
     res = list(conn.execute(query))[0]
@@ -57,7 +59,7 @@ def user_info(username):
     dic = {columns[i]:res[i] for i in range(len(columns))}
     return dic  
 
-
+# Function to create a new user
 def insert_user(name,username,password):
     query = f"SELECT username FROM chat.users WHERE username='{username}';"
     res = list(conn.execute(query))
@@ -69,6 +71,7 @@ def insert_user(name,username,password):
     else:
         return {"error": {"id":80022008,"mensage":"User already exists"}}  
 
+# Function to insert a new message in the database
 def insert_txt(text,user_id,chat_id):
     if not(is_usrinchat(user_id,chat_id)):
         return {"error":{"id":8030220308,"mensage":"Input wrong and very wrong"}}   
@@ -78,12 +81,13 @@ def insert_txt(text,user_id,chat_id):
     res = get_msg(user_id=user_id,chat_id=chat_id,n=1,desc=True)
     return {"id_msg":res["msg_query"][0]["id_msg"]}
   
-
+# Function to check if an user is in the database
 def is_usrinchat(user_id,chat_id):
     query = f'SELECT * FROM chat.participants WHERE (chats_id_chat={chat_id} AND users_id_usr={user_id});'
     res = list(conn.execute(query))
     return not(res == [])
 
+# Fonction to obtain all the messages with certain conditions
 def get_msg(user_id=0,chat_id=0,n=1,desc=True):  
     #order
     if desc:
