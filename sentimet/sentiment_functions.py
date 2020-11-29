@@ -18,29 +18,40 @@ nltk.download("vader_lexicon")
 #stopwords.words('english')
 sia = SentimentIntensityAnalyzer()
 
-def unwrapped_msg(user_id=0,chat_id=0,n_msg=0,last=True):
-    queried_msg = get_msg(user_id,chat_id,n_msg,last) #res["msg_query"][0]["id_msg"]
-    res = [el["txt"] for el in queried_msg["msg_query"]]
-    return res
 
 def obtain_sentiment(user_id=0,chat_id=0,n_msg=0,last=True):
-    msgs = get_msg(user_id,chat_id,n_msg,last)
-    dic = {"list":msgs, "stats":compute_sentiment(msgs)}
-    res={"user_id":user_id, "chat_id":chat_id, "number_msg":n_msg, "from_last":last, "sentiment":dic}
+    msgs = unwrapped_msg(user_id,chat_id,n_msg,last)
+    dic = {"list":msgs, "sentiment":sentiment_stats(msgs)}
+    res={"user_id":user_id, "chat_id":chat_id, "query_limit":n_msg, "from_last":last, "sentiment":dic}
     return res
     
+
+
+
+def unwrapped_msg(user_id=0,chat_id=0,n_msg=0,last=True):
+    queried_msg = get_msg(user_id,chat_id,n_msg,last) #res["msg_query"][0]["id_msg"]
+    txt = [el["text"] for el in queried_msg["msg_query"]]
+    id_txt = [el["id_msg"] for el in queried_msg["msg_query"]]
+    return {"mensages":txt, "id_mensages":id_txt}
+
+def compute_sentiment(mensages):
+    return [sia.polarity_scores(msg) for msg in mensages["mensages"]]
     
-def sentiment_stats(lst):
+def sentiment_stats(msgs):
+    lst=compute_sentiment(msgs)
+    dic = {"msg_number":len(lst)}
     pos_list = [el["pos"] for el in lst]
     neg_list = [el["neg"] for el in lst]
     neu_list = [el["neu"] for el in lst]
-    dic={"mean": {"neg":np.mean(neg_list) , "neu":np.mean(neu_list) , "pos":np.mean(pos_list)} }
-    dic["stdv"] = {"neg":np.std(neg_list) , "neu":np.std(neu_list) , "pos":np.std(pos_list)}
-    dic["median"] = {"neg":np.median(neg_list) , "neu":np.median(neu_list) , "pos":np.median(pos_list)}
-    return {"not":"today"}
+    dic = {"list":{"neg":neg_list,"neu":neu_list,"pos":pos_list}}
+    dic2={}
+    dic2["mean"] = {"neg":np.mean(neg_list) , "neu":np.mean(neu_list) , "pos":np.mean(pos_list)} 
+    dic2["stdv"] = {"neg":np.std(neg_list) , "neu":np.std(neu_list) , "pos":np.std(pos_list)}
+    dic2["median"] = {"neg":np.median(neg_list) , "neu":np.median(neu_list) , "pos":np.median(pos_list)}
+    dic["stats"] = dic2
+    return dic
      
     
     
-def compute_sentiment(mensages):
-    return [ sia.polarity_scores(msg) for msg in mensages ]
+
     
