@@ -1,0 +1,114 @@
+
+
+
+#########     API   INSTRUCTIONS     #########
+ 
+ 
+ 
+ /chat/create/<name>?members=<list of user ids>
+ 
+ This functions creates a chat room. 
+ You need to put a name for the chat room
+ In members you can enter the IDs of the users separated by comas
+     EXAMPLE: http://127.0.0.1:5000/chat/create/Grupo?members=1,2,3,4
+     
+ ------------------------------------------------------------------------
+ 
+ /user/create/<username>?name=<name>&password=<password>
+ 
+ This function creates an user using a certain username
+ You can put a complete name for the user and a password
+      EXAMPLE: http://127.0.0.1:5000/user/create/WA_1?name=Waluigi&password=Hbih32u29923
+      
+ ------------------------------------------------------------------------
+ 
+ /chat/adduser/?user=<user_id>&chat=<chat_id>
+ 
+ This function adds a certain user to a chat room using their IDs
+       EXAMPLE: http://127.0.0.1:5000/?user=13&chat=14
+          
+ ------------------------------------------------------------------------
+ 
+/chat/addmessage/?user=<user_id>&chat=<chat_id>&text=<message>
+ 
+ This function post a text message form a certain user 
+ in a chat room where it belongs using their IDs
+       EXAMPLE: http://127.0.0.1:5000/?user=1&chat=3&text=Please, I don't want to write nonsense
+
+------------------------------------------------------------------------
+ 
+/chat/list/<chat_id>=
+    
+This function returns all the messages from the chat room with that ID
+        EXAMPLE: http://127.0.0.1:5000/chat/list/42
+
+------------------------------------------------------------------------
+ 
+/user/list/<user_id>
+    
+This function returns all the messages from the user with that ID
+        EXAMPLE: http://127.0.0.1:5000/user/list/41
+
+
+------------------------------------------------------------------------
+ 
+/chat/sentiment/<chat_id>
+
+This function returns the sentimetn from the chat room with that ID
+        EXAMPLE: http://127.0.0.1:5000/chat/sentiment/33
+
+
+------------------------------------------------------------------------
+ 
+/user/sentiment/<user_id>
+
+This function returns the sentiment from one user with that ID
+        EXAMPLE: http://127.0.0.1:5000/chat/sentiment/19
+
+------------------------------------------------------------------------
+ 
+/sentiment/?user_id=<user_id>&?chat_id=<chat_id>&n_msg=<number_of_messages>&which=<first/last>
+
+This is a generalized function that returns the sentiment from one user or all of them (with 0 
+or without indicating anything), from a chat or all of them (0 or nothing), using only
+some messages and if we want the first or the last "n_msg" messages
+        EXAMPLE: http://127.0.0.1:5000/chat/sentiment/user_id=1&chat_id=3&n_msg_100&which=first
+        EXAMPLE: http://127.0.0.1:5000/chat/sentiment/user_id=14
+
+------------------------------------------------------------------------
+
+/chat/distance/?chat_id_a=<chat_id_a>&chat_id_b=<chat_id_b>&dist=<euclidean/cosine>
+
+Obtains the similarity/distance between two chats using the eucledian or the cosine
+distances of their normalized frequency word vector.
+        EXAMPLE: http://127.0.0.1:5000/chat/distance/?chat_id_a=9&chat_id_b=7&dist=cosine
+
+
+------------------------------------------------------------------------
+
+/user/distance/?user_id_a=<user_id_a>&user_id_b=<user_id_b>&dist=<euclidean/cosine>
+
+Obtains the similarity/distance between two chats using the eucledian or the cosine
+distances of their normalized frequency word vector.
+        EXAMPLE: http://127.0.0.1:5000/user/distance/?user_id_a=9&user_id_b=7&dist=cosine
+
+
+------------------------------------------------------------------------
+ 
+/plot/?user_id=<user_id>&?chat_id=<chat_id>&n_msg=<number_of_messages>&which=<first/last>
+
+This function download as plot showing the sentiment from one user or all of them (with 0 
+or without indicating anything), from a chat or all of them (0 or nothing), using only
+some messages and if we want the first or the last "n_msg" messages
+        EXAMPLE: http://127.0.0.1:5000/plot/user_id=1&chat_id=3&n_msg_100&which=first
+        EXAMPLE: http://127.0.0.1:5000/plot/user_id=14
+
+
+
+
+
+
+
+
+
+

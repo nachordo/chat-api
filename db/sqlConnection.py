@@ -103,7 +103,7 @@ def is_usrinchat(user_id,chat_id):
     res = list(conn.execute(query))
     return not(res == [])
 
-# Fonction to obtain all the messages with certain conditions
+# Function to obtain all the messages with certain conditions
 def get_msg(user_id=0,chat_id=0,n=1,desc=True):  
     #order
     if desc:

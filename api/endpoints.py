@@ -10,7 +10,8 @@ import time
 
 @app.route("/")
 def hello_world():
-    return {"welcome":"Welcome to the API of my project", "alumn":"Nacho"}
+    instr = open('instructions.txt', 'r').read()
+    return {"welcome":"Welcome to the API of my project", "alumn":"Nacho","instructions":instr}
 
 
 # Creates a chat room with a list of members
@@ -123,6 +124,7 @@ def get_user_dist():
         return {"error": {"id":7654567,"mensage":"Wrong distance"}}
     return users_dist(user_id_a,user_id_b,dist)
 
+# Obtains a plot of the sentiment 
 @app.route("/plot/")
 def plotter():
     user_id = request.args.get("user_id")   
