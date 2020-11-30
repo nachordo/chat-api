@@ -9,6 +9,20 @@ To do so, I worked with the following tools to complete this challenge:
 - `NLTK` - A python library to conduct Natural Language Processing.
  
 In addition I used `MySQL` to handle the chat database, and I communicated it with the python code using `sqlalchemy` and `pymysql`.
+
+![CHAT](https://m.coruscatesolution.com/wp-content/themes/Coruscate/img/Services/chatting-application/chatting-application.svg)
+
+## Initializing the server
+
+In order to initialize the server we must execute these comands:
+
+`export FLASK_APP=main.py`
+
+`export FLASK_DEBUG=true`
+
+`python3 -m flask run`
+
+With this, the URL of the api is `http://127.0.0.1:5000/`
  
 ## API functions
  
@@ -29,6 +43,9 @@ In addition I used `MySQL` to handle the chat database, and I communicated it wi
 
 `/user/sentiment/<user_id>` - Obtains the sentiment analysis of an user
 
+`/chat/distance/` - Obtain the distance (similarity) of the conversations between two chats
+
+`/user/distance/` - Obtain the distance (similarity) of the conversations between two users
 
  
 ## MySQL Database Creation
@@ -41,7 +58,7 @@ I created a series of users and chat names to create the table and I assigned a 
  
 ## Text sentiment analysis
  
-Words
+Usin NLP we can infere the sentiment of a certain text. With the library `NLTK` I built some functions to obtain how positive, negative or neutral is each text message. This is used to compute the mean, median and dispertion of all the text messages in a chat, or all the ones sent by an user. The results can be retrieved using the API.
  
 ## Final thoughts
  
