@@ -13,21 +13,21 @@ In addition I used `MySQL` to handle the chat database, and I communicated it wi
 ## API functions
  
 
-`/chat/create/<name>`
+`/chat/create/<name>` - Creates a chat room with a list of users
 
-`/user/create/<username>`
+`/user/create/<username>` - Creates a new user
 
-`/chat/adduser/`
+`/chat/adduser/` - Adds an existing user to a chat room
 
-`/chat/addmessage/`
+`/chat/addmessage/` - Adds a text message from certain user to a chat
 
-`/chat/list/<chat_id>`
+`/chat/list/<chat_id>` - Lists all messages in a chat room
 
-`/user/list/<user_id>`
+`/user/list/<user_id>` - Lists all messages written by certain user
 
-`/chat/sentiment/<chat_id>`
+`/chat/sentiment/<chat_id>` - Obtains the sentiment analysis of a chat room
 
-`/user/sentiment/<user_id>`
+`/user/sentiment/<user_id>` - Obtains the sentiment analysis of an user
 
 
  

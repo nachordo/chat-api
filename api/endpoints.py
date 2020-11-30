@@ -71,6 +71,31 @@ def sent_from_chat(chat_id):
 def sent_from_user(user_id):
     return obtain_sentiment(user_id=user_id,chat_id=0,n_msg=0,last=True)
 
+# Obtain the sentiment of all mensages from an user
+@app.route("/chat/distance")
+def get_chat_dist():
+    chat_id_a = request.args.get("chat_id_a")   
+    chat_id_b = request.args.get("chat_id_b")   
+    dist = request.args.get("dist")    
+    if (dist!="euclidean") or (dist!="cosine"):
+        return {"error": {"id":7654567,"mensage":"Wrong distance"}}
+    elif dist==None:
+        dist="euclidean"
+    return chat_dist(chat_id_a,chat_id_b,dist_type="euclidean")
+
+@app.route("/user/distance")
+def get_user_dist():
+    user_id_a = request.args.get("user_id_a")   
+    user_id_b = request.args.get("user_id_b")   
+    dist = request.args.get("dist")    
+    if (dist!="euclidean") or (dist!="cosine"):
+        return {"error": {"id":7654567,"mensage":"Wrong distance"}}
+    elif dist==None:
+        dist="euclidean"
+    return user_dist(user_id_a,user_id_b,dist)
+
+
+
 #app.run()
 #(ironhack) [ordovas@localhost chat-api]$ export FLASK_APP=main.py
 #(ironhack) [ordovas@localhost chat-api]$ export FLASK_DEBUG=true

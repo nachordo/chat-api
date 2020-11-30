@@ -13,6 +13,7 @@ from nltk.corpus import stopwords
 from db.sqlConnection import get_msg
 import numpy as np
 import re
+from scipy.spatial.distance import cosine,euclidean
 
 nltk.download('stopwords')
 nltk.download("vader_lexicon")
@@ -59,7 +60,7 @@ def obtain_word_count(user_id=0,chat_id=0,n_msg=0,last=True):
     res={"user_id":user_id, "chat_id":chat_id, "query_limit":n_msg, "from_last":last, "word_count":dic}
     return res
 
-# Computes the wor count of a list of strings
+# Computes the word count of a list of strings
 def word_count(lst):
     counts = dict()
     for string_raw in lst: 
@@ -72,4 +73,51 @@ def word_count(lst):
             else:
                 counts[word.lower()] = 1  
     return counts
+    
+
+
+
+# Computes the distance of 2 users
+def users_dist(user_id_a,user_id_b,dist_type="euclidean"):
+    person_a=obtain_word_count(user_id=user_id_a,chat_id=0,n_msg=0,last=True)
+    person_b=obtain_word_count(user_id=user_id_b,chat_id=0,n_msg=0,last=True)
+    words=set(list(person_a["word_count"]["list"].keys())+list(person_b["word_count"]["list"].keys()))
+    vec_a=[]
+    vec_b=[]
+    for word in words:
+        vec_a.append(person_a["word_count"]["list"].get(word,0))
+        vec_b.append(person_b["word_count"]["list"].get(word,0))
+    vec_a=np.array(vec_a)/sum(vec_a)
+    vec_b=np.array(vec_b)/sum(vec_b)
+    dist=-1
+    if dist_type=="euclidean":
+        dist=euclidean(vec_a,vec_b)
+    elif dist_type=="cosine":
+        dist=cosine(vec_a,vec_b)
+    else:
+        return {"error": {"id":7654567,"mensage":"Wrong distance"}}
+    return {"user_id_a":user_id_a, "user_id_b":user_id_b, "dist_type":dist_type, "dist":dist}
+    
+
+
+# Computes the distance of 2 chats
+def chat_dist(chat_id_a,chat_id_b,dist_type="euclidean"):
+    chat_a=obtain_word_count(user_id=0,chat_id=chat_id_a,n_msg=0,last=True)
+    chat_b=obtain_word_count(user_id=0,chat_id=chat_id_b,n_msg=0,last=True)
+    words=set(list(chat_a["word_count"]["list"].keys())+list(chat_b["word_count"]["list"].keys()))
+    vec_a=[]
+    vec_b=[]
+    for word in words:
+        vec_a.append(chat_a["word_count"]["list"].get(word,0))
+        vec_b.append(chat_b["word_count"]["list"].get(word,0))
+    vec_a=np.array(vec_a)/sum(vec_a)
+    vec_b=np.array(vec_b)/sum(vec_b)
+    dist=-1
+    if dist_type=="euclidean":
+        dist=euclidean(vec_a,vec_b)
+    elif dist_type=="cosine":
+        dist=cosine(vec_a,vec_b)
+    else:
+        return {"error": {"id":7654567,"mensage":"Wrong distance"}}
+    return {"chat_id_a":chat_id_a, "chat_id_b":chat_id_b, "dist_type":dist_type, "dist":dist}
     
