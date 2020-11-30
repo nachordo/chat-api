@@ -14,7 +14,7 @@ In addition I used `MySQL` to handle the chat database, and I communicated it wi
 
 ## Initializing the server
 
-In order to initialize the server we must execute these comands:
+In order to initialize the server we must execute these commands:
 
 `export FLASK_APP=main.py`
 
@@ -26,7 +26,7 @@ With this, the URL of the api is `http://127.0.0.1:5000/`
  
 ## API functions
  
-When someone access http://127.0.0.1:5000/ the server returns a json with a welcome messages with more detailed instructions (stored in `instructions.txt`). Here I list all the functions available.
+When someone accesses http://127.0.0.1:5000/ the server returns a json with a welcome message with more detailed instructions (stored in `instructions.txt`). Here I list all the functions available.
 
 
 - `/chat/create/<name>` - Creates a chat room with a list of users
@@ -45,13 +45,13 @@ When someone access http://127.0.0.1:5000/ the server returns a json with a welc
 
 - `/user/sentiment/<user_id>` - Obtains the sentiment analysis of an user
 
-- `/sentiment/` - Generalized sentiment function to obtain it fom chats and/or users, querying ther first/last N messages or all of them.
+- `/sentiment/` - Generalized sentiment function to obtain it from chats and/or users, querying the first/last N messages or all of them.
 
 - `/chat/distance/` - Obtain the distance (similarity) of the conversations between two chats
 
 - `/user/distance/` - Obtain the distance (similarity) of the conversations between two users
 
-- `/plot/` - Downloads a plot of the sentiment of chats and/or users, querying ther first/last N messages or all of them.
+- `/plot/` - Downloads a plot of the sentiment of chats and/or users, querying the first/last N messages or all of them.
  
 ## MySQL Database Creation
  
@@ -63,10 +63,11 @@ I created a series of users and chat names to create the table and I assigned a 
  
 ## Text sentiment analysis
  
-Usin NLP we can infere the sentiment of a certain text. With the library `NLTK` I built some functions to obtain how positive, negative or neutral is each text message. This is used to compute the mean, median and dispertion of all the text messages in a chat, or all the ones sent by an user. The results can be retrieved using the API.
+Using NLP we can infer the sentiment of a certain text. With the library `NLTK` I built some functions to obtain how positive, negative or neutral each text message is. This is used to compute the mean, median and dispersion of all the text messages in a chat, or all the ones sent by an user. The results can be retrieved using the API.
 
-Additionally I computed the similarity between chat rooms and users using the "distance" between the normalized word count verctors (without stop words). This could be useful, for example, if we want to get in the same job team workers with that are similar.
+Additionally I computed the similarity between chat rooms and users using the "distance" between the normalized word count vectors (without stop words). This could be useful, for example, if we want to get in the same job team workers that are similar.
  
 ## Final thoughts
  
-There are many ways to improve this project, but I hav shown here many of the possibilities that these tools have. I could have a more complete MySQL database (e.g. having datetime info about each message, lable administrators for each chat room, etc), but these are secondary and cosmetic, so I focused on other functions. The examples that I'm using fo not have many datapoints, so for bigger databases I could add inputs to skip some information in the json results. Of course there are many plots that can be done using the information from the sentiment analysis and distances between users, but in this weekend project I showed only a few posibilities.
+There are many ways to improve this project, but I have shown here many of the possibilities that these tools have. I could have a more complete MySQL database (e.g. having datetime info about each message, label administrators for each chat room, etc), but these are secondary and cosmetic, so I focused on other functions. The examples that I'm using do not have many data points, so for bigger databases I could add inputs to skip some information in the json results. Of course there are many plots that can be done using the information from the sentiment analysis and distances between users, but in this weekend project I showed only a few possibilities.
+

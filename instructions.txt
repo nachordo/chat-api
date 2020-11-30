@@ -1,15 +1,16 @@
 
 
 
+
 #########     API   INSTRUCTIONS     #########
  
  
  
  /chat/create/<name>?members=<list of user ids>
  
- This functions creates a chat room. 
+ This function creates a chat room. 
  You need to put a name for the chat room
- In members you can enter the IDs of the users separated by comas
+ In members you can enter the IDs of the users separated by commas
      EXAMPLE: http://127.0.0.1:5000/chat/create/Grupo?members=1,2,3,4
      
  ------------------------------------------------------------------------
@@ -54,7 +55,7 @@ This function returns all the messages from the user with that ID
  
 /chat/sentiment/<chat_id>
 
-This function returns the sentimetn from the chat room with that ID
+This function returns the sentiment from the chat room with that ID
         EXAMPLE: http://127.0.0.1:5000/chat/sentiment/33
 
 
@@ -79,7 +80,7 @@ some messages and if we want the first or the last "n_msg" messages
 
 /chat/distance/?chat_id_a=<chat_id_a>&chat_id_b=<chat_id_b>&dist=<euclidean/cosine>
 
-Obtains the similarity/distance between two chats using the eucledian or the cosine
+Obtains the similarity/distance between two chats using the euclidean or the cosine
 distances of their normalized frequency word vector.
         EXAMPLE: http://127.0.0.1:5000/chat/distance/?chat_id_a=9&chat_id_b=7&dist=cosine
 
@@ -88,7 +89,7 @@ distances of their normalized frequency word vector.
 
 /user/distance/?user_id_a=<user_id_a>&user_id_b=<user_id_b>&dist=<euclidean/cosine>
 
-Obtains the similarity/distance between two chats using the eucledian or the cosine
+Obtains the similarity/distance between two chats using the euclidean or the cosine
 distances of their normalized frequency word vector.
         EXAMPLE: http://127.0.0.1:5000/user/distance/?user_id_a=9&user_id_b=7&dist=cosine
 
@@ -102,6 +103,7 @@ or without indicating anything), from a chat or all of them (0 or nothing), usin
 some messages and if we want the first or the last "n_msg" messages
         EXAMPLE: http://127.0.0.1:5000/plot/user_id=1&chat_id=3&n_msg_100&which=first
         EXAMPLE: http://127.0.0.1:5000/plot/user_id=14
+
 
 
 
