@@ -23,7 +23,7 @@ sia = SentimentIntensityAnalyzer()
 # Obtain the sentiment of all the messages that meets some conditions
 def obtain_sentiment(user_id=0,chat_id=0,n_msg=0,last=True):
     msgs = unwrapped_msg(user_id,chat_id,n_msg,last)
-    dic = {"list":msgs, "sentiment":sentiment_stats(msgs)}
+    dic = {"list":msgs, "sentiment_stats":sentiment_stats(msgs)}
     res={"user_id":user_id, "chat_id":chat_id, "query_limit":n_msg, "from_last":last, "sentiment":dic}
     return res
 

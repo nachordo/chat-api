@@ -2,9 +2,11 @@ from api.app import app
 from flask import request, send_from_directory
 from db.sqlConnection import *
 from sentimet.sentiment_functions import *
+from plotting.plot_functions import plotting
 from bson import json_util
 import os
 from random import choice
+import time
 
 @app.route("/")
 def hello_world():
@@ -79,10 +81,10 @@ def sentiment():
     n = request.args.get("n_msg") 
     last   = request.args.get("which") 
     #Defensive programming "which"
-    if (last!="first") or (last!="last"):
+    if last==None:
+        last=True
+    elif (last!="first") and (last!="last"):
         return {"error": {"id":3223,"mensage":"You must select which=first or which=last"}}
-    elif last==None:
-        last="last"
     else:
         last=="last"
     #Defensive programming
@@ -93,7 +95,7 @@ def sentiment():
     if n==None:
         n=0     
     #Execute script
-    return obtain_sentiment(user_id=user_id,chat_id=chat_id,n_msg=n,last=last)
+    return obtain_sentiment(user_id=user_id,chat_id=chat_id,n_msg=int(n),last=last)
 
 
 # Obtain the distance (similarity) of the conversations between two chats
@@ -101,12 +103,13 @@ def sentiment():
 def get_chat_dist():
     chat_id_a = request.args.get("chat_id_a")   
     chat_id_b = request.args.get("chat_id_b")   
-    dist = request.args.get("dist")    
-    if (dist!="euclidean") or (dist!="cosine"):
-        return {"error": {"id":7654567,"mensage":"Wrong distance"}}
-    elif dist==None:
+    dist = request.args.get("dist")  
+    if dist==None:
         dist="euclidean"
-    return chat_dist(chat_id_a,chat_id_b,dist_type="euclidean")
+    elif (dist!="euclidean") and (dist!="cosine"):
+        return {"error": {"id":7654567,"mensage":"Wrong distance"}}
+
+    return chat_dist(chat_id_a,chat_id_b,dist)
 
 # Obtain the distance (similarity) of the conversations between two users
 @app.route("/user/distance/")
@@ -114,16 +117,42 @@ def get_user_dist():
     user_id_a = request.args.get("user_id_a")   
     user_id_b = request.args.get("user_id_b")   
     dist = request.args.get("dist")    
-    if (dist!="euclidean") or (dist!="cosine"):
-        return {"error": {"id":7654567,"mensage":"Wrong distance"}}
-    elif dist==None:
+    if dist==None:
         dist="euclidean"
-    return user_dist(user_id_a,user_id_b,dist)
+    elif (dist!="euclidean") and (dist!="cosine"):
+        return {"error": {"id":7654567,"mensage":"Wrong distance"}}
+    return users_dist(user_id_a,user_id_b,dist)
 
-
+@app.route("/plot/")
+def plotter():
+    user_id = request.args.get("user_id")   
+    chat_id = request.args.get("chat_id")   
+    n = request.args.get("n_msg") 
+    last   = request.args.get("which") 
+    #Defensive programming "which"
+    if last==None:
+        last=True
+    elif (last!="first") and (last!="last"):
+        return {"error": {"id":3223,"mensage":"You must select which=first or which=last"}}
+    else:
+        last=="last"
+    #Defensive programming
+    if user_id==None:
+        user_id=0
+    if chat_id==None:
+        chat_id=0
+    if n==None:
+        n=0     
+    directory = os.getcwd()+"/plotting"
+    result=plotting(user_id,chat_id,n,last)
+    if result:
+        return send_from_directory(directory=directory, filename="result_query.png", as_attachment=True)
+    else:
+        return {"error": {"id":436909634,"mensage":"The user is not in the chat"}}        
 
 #app.run()
 #(ironhack) [ordovas@localhost chat-api]$ export FLASK_APP=main.py
 #(ironhack) [ordovas@localhost chat-api]$ export FLASK_DEBUG=true
 #(ironhack) [ordovas@localhost chat-api]$ python3 -m flask run
-#
+#http://127.0.0.1:5000/plot/?which=last&chat_id=6&user_id=25
+#http://127.0.0.1:5000/plot/?which=last&chat_id=8&user_id=24

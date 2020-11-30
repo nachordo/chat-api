@@ -59,6 +59,22 @@ def user_info(username):
     dic = {columns[i]:res[i] for i in range(len(columns))}
     return dic  
 
+# Function to obtain the chat info    
+def id_chat_info(id_chat):
+    query = f"SELECT * FROM chat.chats WHERE id_chat='{id_chat}';"
+    res = list(conn.execute(query))[0]
+    columns = ["id_chat","name"]
+    dic = {columns[i]:res[i] for i in range(len(columns))}
+    return dic
+
+# Function to obtain user info
+def id_user_info(id_user):
+    query = f"SELECT id_usr,name,username FROM chat.users WHERE id_usr='{id_user}';"
+    res = list(conn.execute(query))[0]
+    columns = ["id_usr","name","username"]
+    dic = {columns[i]:res[i] for i in range(len(columns))}
+    return dic  
+
 # Function to create a new user
 def insert_user(name,username,password):
     query = f"SELECT username FROM chat.users WHERE username='{username}';"
